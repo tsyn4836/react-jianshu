@@ -82,6 +82,21 @@ export const NavSearch = styled.input.attrs({
 	&::placeholder {
 		color: #999;
 	}
+	&.focused {
+		width: 240px;
+	}
+	&.slide-enter {
+		transition: all .2s ease-out;
+	}
+	&.slide-enter-active {
+		width: 240px;
+	}
+	&.slide-exit {
+		transition: all .2s ease-out;
+	}
+	&.slide-exit-active {
+		width: 160px;
+	}
 `;
 
 export const Addition = styled.div`
