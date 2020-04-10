@@ -57,7 +57,7 @@ export const SearchWrapper = styled.div`
 		line-height: 30px;
 		border-radius: 15px;
 		text-align: center;
-		&.focused {
+		&:focus {
 			background: #777;
 			color: #fff;
 		}
@@ -79,23 +79,12 @@ export const NavSearch = styled.input.attrs({
 	background: #eee;
 	font-size: 14px;
 	color: #666;
+	transition:all .2s ease-out;
 	&::placeholder {
 		color: #999;
 	}
-	&.focused {
+	&:focus {
 		width: 240px;
-	}
-	&.slide-enter {
-		transition: all .2s ease-out;
-	}
-	&.slide-enter-active {
-		width: 240px;
-	}
-	&.slide-exit {
-		transition: all .2s ease-out;
-	}
-	&.slide-exit-active {
-		width: 160px;
 	}
 `;
 
