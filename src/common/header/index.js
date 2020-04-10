@@ -4,6 +4,7 @@ import {
 	Logo,
 	Nav,
 	NavItem,
+	SearchWrapper,
 	NavSearch,
 	Addition,
 	Button
@@ -17,9 +18,14 @@ class Header extends Component {
 				<Nav>
 					<NavItem className='left active'>首页</NavItem>
 					<NavItem className='left'>下载App</NavItem>
-					<NavItem className='right'>aa</NavItem>
+					<NavItem className='right'>
+						<i className="iconfont">&#xe636;</i>
+					</NavItem>
 					<NavItem className='right'>退出</NavItem>
-					<NavSearch />
+					<SearchWrapper>
+						<NavSearch />
+						<i className='iconfont'>&#xe614;</i>
+					</SearchWrapper>
 				</Nav>
 				<Addition>
 					<Button className='writting'>
