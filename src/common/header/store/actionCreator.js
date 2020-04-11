@@ -2,15 +2,23 @@ import * as actionType from './actionType'
 import { fromJS } from 'immutable'
 import axios from 'axios'
 
+const change_list = (data) => ({
+	type: actionType.CHANGE_LIST,
+	data: fromJS(data),
+	totalPage: Math.ceil(data.length / 10)
+})
+
 export const search_focus = () => ({
 	type: actionType.SEARCH_FOCUS
 })
 export const search_blur = () => ({
 	type: actionType.SEARCH_BLUR
 })
-export const change_list = (data) => ({
-	type: actionType.CHANGE_LIST,
-	data:fromJS(data)
+export const mouse_enter = () => ({
+	type: actionType.MOUSE_ENTER
+})
+export const mouse_leave = () => ({
+	type: actionType.MOUSE_LEAVE
 })
 export const get_list = () => {
 	return (dispatch) => {
@@ -22,3 +30,7 @@ export const get_list = () => {
 		})
 	}
 }
+export const change_page = (page) => ({
+	type: actionType.CHANGE_PAGE,
+	page
+})

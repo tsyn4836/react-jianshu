@@ -20,30 +20,44 @@ import {
 
 class Header extends Component {
 	getListArea() {
-		if (this.props.focused) {
-		return (
-			<SearchInfo>
-				<SearchInfoTitle>
-					热门搜索
-						<SearchInfoSwitch>
-						换一批
+		const { focused, list, page, totalPage, mouseIn, mouseEnter, mouseLeave, handleChangePage } = this.props
+		const newList = list.toJS()
+		const pageList = []
+
+		if (newList.length) {
+			for (let i = (page - 1) * 10; i < page * 10; i++) {
+				pageList.push(
+					<SearchInfoItem key={newList[i]}>{newList[i]}</SearchInfoItem>
+				)
+			}
+		}
+
+		if (focused || mouseIn) {
+			return (
+				<SearchInfo
+					onMouseEnter={mouseEnter}
+					onMouseLeave={mouseLeave}
+				>
+					<SearchInfoTitle>
+						热门搜索
+						<SearchInfoSwitch
+							onClick={() => { handleChangePage(page, totalPage) }}
+						>
+							换一批
 						</SearchInfoSwitch>
-				</SearchInfoTitle>
-				<SearchInfoList>
-					{
-						this.props.list.map(item => {
-							return <SearchInfoItem key={item}>{item}</SearchInfoItem>
-						})
-					}
-				</SearchInfoList>
-			</SearchInfo>
-		)
+					</SearchInfoTitle>
+					<SearchInfoList>
+						{pageList}
+					</SearchInfoList>
+				</SearchInfo>
+			)
 		} else {
 			return null;
 		}
 	}
 
 	render() {
+		const { focused, handleInputFocus, handleInputBlur } = this.props
 		return (
 			<HeaderWrapper>
 				<Logo />
@@ -56,17 +70,17 @@ class Header extends Component {
 					<NavItem className='right'>退出</NavItem>
 					<SearchWrapper>
 						<CSSTransition
-							in={this.props.focused}
+							in={focused}
 							timeout={200}
 							classNames="slide"
 						>
 							<NavSearch
-								className={this.props.focused ? 'focused' : ''}
-								onFocus={this.props.handleInputFocus}
-								onBlur={this.props.handleInputBlur}
+								className={focused ? 'focused' : ''}
+								onFocus={handleInputFocus}
+								onBlur={handleInputBlur}
 							/>
 						</CSSTransition >
-						<i className={this.props.focused ? 'focused iconfont' : 'iconfont'}>
+						<i className={focused ? 'focused iconfont' : 'iconfont'}>
 							&#xe614;
 						</i>
 						{this.getListArea()}
@@ -88,7 +102,10 @@ const mapStateToProps = state => {
 	return {
 		// focused: state.get('header').get('focused')
 		focused: state.getIn(['header', 'focused']),
-		list:state.getIn(['header','list'])
+		list: state.getIn(['header', 'list']),
+		page: state.getIn(['header', 'page']),
+		totalPage: state.getIn(['header', 'totalPage']),
+		mouseIn: state.getIn(['header', 'mouseIn'])
 	}
 }
 const mapDispatchToProps = dispatch => {
@@ -99,6 +116,19 @@ const mapDispatchToProps = dispatch => {
 		},
 		handleInputBlur() {
 			dispatch(actionCreator.search_blur())
+		},
+		mouseEnter() {
+			dispatch(actionCreator.mouse_enter())
+		},
+		mouseLeave() {
+			dispatch(actionCreator.mouse_leave())
+		},
+		handleChangePage(page, totalPage) {
+			if (page < totalPage) {
+				dispatch(actionCreator.change_page(page + 1))
+			} else {
+				dispatch(actionCreator.change_page(1))
+			}
 		}
 	}
 }
