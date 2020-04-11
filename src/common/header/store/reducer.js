@@ -14,6 +14,9 @@ export default (state = defaultState, action) => {
 		case actionType.SEARCH_BLUR: {
 			return state.set('focused', false)
 		}
+		case actionType.CHANGE_LIST: {
+			return state.set('list',action.data)
+		}
 		default: {
 			return state
 		}
