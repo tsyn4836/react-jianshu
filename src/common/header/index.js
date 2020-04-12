@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group';
-import { actionCreator } from './store/'
+import { actionCreators } from './store/'
 import {
 	HeaderWrapper,
 	Logo,
@@ -60,7 +60,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { focused, list, handleInputFocus, handleInputBlur } = this.props
+		const { focused, mouseIn, list, handleInputFocus, handleInputBlur } = this.props
 		return (
 			<HeaderWrapper>
 				<Logo />
@@ -73,17 +73,17 @@ class Header extends Component {
 					<NavItem className='right'>退出</NavItem>
 					<SearchWrapper>
 						<CSSTransition
-							in={focused}
+							in={focused || mouseIn}
 							timeout={200}
 							classNames="slide"
 						>
 							<NavSearch
-								className={focused ? 'focused' : ''}
+								className={focused || mouseIn ? 'focused' : ''}
 								onFocus={() => { handleInputFocus(list) }}
 								onBlur={handleInputBlur}
 							/>
 						</CSSTransition >
-						<i className={focused ? 'focused iconfont zoom' : 'iconfont zoom'}>
+						<i className={focused || mouseIn ? 'focused iconfont zoom' : 'iconfont zoom'}>
 							&#xe614;
 						</i>
 						{this.getListArea()}
@@ -114,31 +114,33 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		handleInputFocus(list) {
-			list.size === 0 && dispatch(actionCreator.get_list())
-			dispatch(actionCreator.search_focus())
+			list.size === 0 && dispatch(actionCreators.get_list())
+			dispatch(actionCreators.search_focus())
 		},
 		handleInputBlur() {
-			dispatch(actionCreator.search_blur())
+			dispatch(actionCreators.search_blur())
 		},
 		mouseEnter() {
-			dispatch(actionCreator.mouse_enter())
+			dispatch(actionCreators.mouse_enter())
 		},
 		mouseLeave() {
-			dispatch(actionCreator.mouse_leave())
+			dispatch(actionCreators.mouse_leave())
 		},
 		handleChangePage(page, totalPage, spin) {
+			// 加载小图标旋转
 			let originAngle = spin.style.transform.replace(/[^0-9]/ig, '');
-			if (originAngle) {
-				originAngle = parseInt(originAngle, 10);
-			} else {
+			if (!originAngle) {
 				originAngle = 0;
+			} else {
+				originAngle = parseInt(originAngle, 10);
 			}
 			spin.style.transform = `rotate(${originAngle + 360}deg)`;
 
+			// 热门搜索项目循环刷新
 			if (page < totalPage) {
-				dispatch(actionCreator.change_page(page + 1))
+				dispatch(actionCreators.change_page(page + 1))
 			} else {
-				dispatch(actionCreator.change_page(1))
+				dispatch(actionCreators.change_page(1))
 			}
 		}
 	}
