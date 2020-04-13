@@ -99,7 +99,6 @@ export const WriterWrapper = styled.div`
 	/* line-height: 300px; */
 	/* text-align: center; */
 	a {
-		color:#b7b4ae;
 		text-decoration:none;
 	}
 	.title {
@@ -135,7 +134,7 @@ export const WriterName = styled.a`
 	margin-right: 60px;
 	font-size: 14px;
 	display: block;
-	color: rgb(197, 194, 190);
+	color: #333;
 	float:left;
 	margin-left:20px;
 `
@@ -143,7 +142,6 @@ export const WriterInfo = styled.p`
 	padding-top: 5px;
 	font-size: 12px;
 	display: block;
-	color: rgb(197, 194, 190);
 	float:left;
 	margin-left:20px;
 `
