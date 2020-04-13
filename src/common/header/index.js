@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { CSSTransition } from 'react-transition-group';
+import { Link } from 'react-router-dom'
+import { CSSTransition } from 'react-transition-group'
 import { actionCreators } from './store/'
 import {
 	HeaderWrapper,
@@ -19,8 +20,9 @@ import {
 } from './style';
 
 class Header extends Component {
+
 	getListArea() {
-		const { focused, list, page, totalPage, mouseIn, mouseEnter, mouseLeave, handleChangePage } = this.props
+		const { focused, list, page, totalPage, mouseIn, handleMouseEnter, handleMouseLeave, handleChangePage } = this.props;
 		const newList = list.toJS()
 		const pageList = []
 
@@ -35,17 +37,15 @@ class Header extends Component {
 		if (focused || mouseIn) {
 			return (
 				<SearchInfo
-					onMouseEnter={mouseEnter}
-					onMouseLeave={mouseLeave}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
 				>
 					<SearchInfoTitle>
 						热门搜索
 						<SearchInfoSwitch
-							onClick={() => { handleChangePage(page, totalPage, this.spinIcon) }}
+							onClick={() => handleChangePage(page, totalPage, this.spinIcon)}
 						>
-							<i
-								ref={(icon) => { this.spinIcon = icon }} className="iconfont spin">
-								&#xe851;</i>
+							<i ref={(icon) => { this.spinIcon = icon }} className="iconfont spin">&#xe851;</i>
 							换一批
 						</SearchInfoSwitch>
 					</SearchInfoTitle>
@@ -60,10 +60,12 @@ class Header extends Component {
 	}
 
 	render() {
-		const { focused, mouseIn, list, handleInputFocus, handleInputBlur } = this.props
+		const { focused, mouseIn, list, handleInputFocus, handleInputBlur } = this.props;
 		return (
 			<HeaderWrapper>
-				<Logo />
+				<Link to='/'>
+					<Logo />
+				</Link>
 				<Nav>
 					<NavItem className='left active'>首页</NavItem>
 					<NavItem className='left'>下载App</NavItem>
@@ -79,10 +81,10 @@ class Header extends Component {
 						>
 							<NavSearch
 								className={focused || mouseIn ? 'focused' : ''}
-								onFocus={() => { handleInputFocus(list) }}
+								onFocus={() => handleInputFocus(list)}
 								onBlur={handleInputBlur}
 							/>
-						</CSSTransition >
+						</CSSTransition>
 						<i className={focused || mouseIn ? 'focused iconfont zoom' : 'iconfont zoom'}>
 							&#xe614;
 						</i>
@@ -90,10 +92,12 @@ class Header extends Component {
 					</SearchWrapper>
 				</Nav>
 				<Addition>
-					<Button className='writting'>
-						<i className="iconfont">&#xe615;</i>
-								写文章
-							</Button>
+					<Link to='/write'>
+						<Button className='writting'>
+							<i className="iconfont">&#xe615;</i>
+							写文章
+						</Button>
+					</Link>
 					<Button className='reg'>注册</Button>
 				</Addition>
 			</HeaderWrapper>
@@ -101,7 +105,7 @@ class Header extends Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
 		// focused: state.get('header').get('focused')
 		focused: state.getIn(['header', 'focused']),
@@ -111,20 +115,21 @@ const mapStateToProps = state => {
 		mouseIn: state.getIn(['header', 'mouseIn'])
 	}
 }
-const mapDispatchToProps = dispatch => {
+
+const mapDispatchToProps = (dispatch) => {
 	return {
 		handleInputFocus(list) {
-			list.size === 0 && dispatch(actionCreators.get_list())
-			dispatch(actionCreators.search_focus())
+			(list.size === 0) && dispatch(actionCreators.getList());
+			dispatch(actionCreators.searchFocus())
 		},
 		handleInputBlur() {
-			dispatch(actionCreators.search_blur())
+			dispatch(actionCreators.searchBlur())
 		},
-		mouseEnter() {
-			dispatch(actionCreators.mouse_enter())
+		handleMouseEnter() {
+			dispatch(actionCreators.mouseEnter())
 		},
-		mouseLeave() {
-			dispatch(actionCreators.mouse_leave())
+		handleMouseLeave() {
+			dispatch(actionCreators.mouseLeave())
 		},
 		handleChangePage(page, totalPage, spin) {
 			// 加载小图标旋转
@@ -135,15 +140,15 @@ const mapDispatchToProps = dispatch => {
 				originAngle = parseInt(originAngle, 10);
 			}
 			spin.style.transform = `rotate(${originAngle + 360}deg)`;
-
+		
 			// 热门搜索项目循环刷新
 			if (page < totalPage) {
-				dispatch(actionCreators.change_page(page + 1))
+				dispatch(actionCreators.changePage(page + 1))
 			} else {
-				dispatch(actionCreators.change_page(1))
+				dispatch(actionCreators.changePage(1))
 			}
 		}
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header) 
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

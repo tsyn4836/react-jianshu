@@ -25,8 +25,8 @@ export default (state = defaultState, action) => {
 		}
 		case actionType.CHANGE_LIST: {
 			return state.merge({
-				'list': action.data,
-				'totalPage': action.totalPage
+				list: action.data,
+				totalPage: action.totalPage
 			})
 			// return state
 			// 	.set('list', action.data)

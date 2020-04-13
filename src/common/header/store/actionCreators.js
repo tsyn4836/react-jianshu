@@ -2,35 +2,35 @@ import * as actionType from './actionType'
 import { fromJS } from 'immutable'
 import axios from 'axios'
 
-const change_list = (data) => ({
+const changeList = (data) => ({
 	type: actionType.CHANGE_LIST,
 	data: fromJS(data),
 	totalPage: Math.ceil(data.length / 10)
 })
 
-export const search_focus = () => ({
+export const searchFocus = () => ({
 	type: actionType.SEARCH_FOCUS
 })
-export const search_blur = () => ({
+export const searchBlur = () => ({
 	type: actionType.SEARCH_BLUR
 })
-export const mouse_enter = () => ({
+export const mouseEnter = () => ({
 	type: actionType.MOUSE_ENTER
 })
-export const mouse_leave = () => ({
+export const mouseLeave = () => ({
 	type: actionType.MOUSE_LEAVE
 })
-export const get_list = () => {
+export const getList = () => {
 	return (dispatch) => {
 		axios.get("api/headerList.json").then(res => {
 			const data = res.data
-			dispatch(change_list(data.data))
+			dispatch(changeList(data.data))
 		}).catch(e => {
 			console.log(e)
 		})
 	}
 }
-export const change_page = (page) => ({
+export const changePage = (page) => ({
 	type: actionType.CHANGE_PAGE,
 	page
 })
