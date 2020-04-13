@@ -74,8 +74,8 @@ class Header extends Component {
 						<i className="iconfont">&#xe636;</i>
 					</NavItem>
 					{
-						isLogined ? 
-							<NavItem onClick={handleLogout} className='right'>退出</NavItem> : 
+						isLogined ?
+							<NavItem onClick={handleLogout} className='right'>退出</NavItem> :
 							<Link to='/login'><NavItem className='right'>登录</NavItem></Link>
 					}
 					<SearchWrapper>
@@ -146,7 +146,7 @@ const mapDispatchToProps = (dispatch) => {
 				originAngle = parseInt(originAngle, 10);
 			}
 			spin.style.transform = `rotate(${originAngle + 360}deg)`;
-		
+
 			// 热门搜索项目循环刷新
 			if (page < totalPage) {
 				dispatch(actionCreators.changePage(page + 1))
